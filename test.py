@@ -38,7 +38,7 @@ def iou_score(pred, gt, smooth=1e-6):
 
 def run_inference_and_analysis():
 
-    # ---------- Load model ----------
+    # Load model
     model = UNet(in_channels=config.CHANNELS).to(DEVICE)
     model_path = os.path.join(
         config.MODEL_DIR,
@@ -47,7 +47,7 @@ def run_inference_and_analysis():
     model.load_state_dict(torch.load(model_path, map_location=DEVICE))
     model.eval()
 
-    # ---------- Output directories ----------
+    #  Output directories for saving
     binary_mask_dir = os.path.join(config.PREDICTION_ROOT, "binary_masks")
     segmented_dir = os.path.join(config.PREDICTION_ROOT, "segmented_images")
     overlay_dir = os.path.join(config.PREDICTION_ROOT, "overlay_images")
@@ -56,15 +56,15 @@ def run_inference_and_analysis():
     os.makedirs(segmented_dir, exist_ok=True)
     os.makedirs(overlay_dir, exist_ok=True)
 
-    # ---------- CSV file ----------
+    # CSV file saving
     csv_path = os.path.join(config.PREDICTION_ROOT, "metrics.csv")
     csv_file = open(csv_path, "w", newline="")
     writer = csv.writer(csv_file)
     writer.writerow(["Image", "Dice", "IoU"])
 
-    print(f"[INFO] Saving results to {config.PREDICTION_ROOT}")
+    print(f"Saving results to {config.PREDICTION_ROOT}")
 
-    # ---------- Iterate over test images ----------
+
     image_files = sorted(os.listdir(config.TEST_IMAGE_DIR))
 
     for filename in image_files:
@@ -74,7 +74,7 @@ def run_inference_and_analysis():
         image_path = os.path.join(config.TEST_IMAGE_DIR, filename)
         mask_path = os.path.join(config.TEST_MASK_DIR, filename)  # GT mask
 
-        # Load image & mask
+        # Load image and corresponding mask
         image = Image.open(image_path).convert("RGB")
         gt_mask = Image.open(mask_path).convert("L")
 
@@ -82,14 +82,14 @@ def run_inference_and_analysis():
 
         input_tensor = TRANSFORM(image).unsqueeze(0).to(DEVICE)
 
-        # ---------- Inference ----------
+        # Do inference
         with torch.no_grad():
             logits = model(input_tensor)
             probs = torch.sigmoid(logits).squeeze().cpu().numpy()
 
         binary_mask = (probs > config.THRESHOLD).astype(np.uint8)
 
-        # Resize masks back
+        # Resize masks to original image size
         binary_mask_img = Image.fromarray(binary_mask * 255).resize(
             original_size, Image.NEAREST
         )
@@ -99,25 +99,25 @@ def run_inference_and_analysis():
 
         pred_array = (np.array(binary_mask_img) > 0).astype(np.uint8)
 
-        # ---------- Metrics ----------
+        # Metrics calculation
         dice = dice_score(pred_array, gt_array)
         iou = iou_score(pred_array, gt_array)
 
         writer.writerow([filename, f"{dice:.4f}", f"{iou:.4f}"])
 
-        # ---------- Save binary mask ----------
+        # Save the binary mask
         binary_mask_img.save(
             os.path.join(binary_mask_dir, filename)
         )
 
-        # ---------- Segmented image ----------
+        # Segmented image extraction
         image_np = np.array(image)
         segmented = image_np * pred_array[:, :, None]
         Image.fromarray(segmented).save(
             os.path.join(segmented_dir, filename)
         )
 
-        # ---------- Overlay ----------
+        # Overlay mask over image
         overlay = image_np.copy()
         overlay[pred_array == 1] = [255, 0, 0]  # red overlay
 
@@ -131,12 +131,10 @@ def run_inference_and_analysis():
         )
 
     csv_file.close()
-    print("[INFO] Inference and analysis completed.")
+    print("Inference and analysis completed.")
 
 
-# ====================================================
-# ENTRY POINT
-# ====================================================
+
 
 if __name__ == "__main__":
     run_inference_and_analysis()
