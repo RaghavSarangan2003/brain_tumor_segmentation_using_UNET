@@ -44,7 +44,7 @@ The training of this model was performed with the following system specification
 
 1. Clone the repository
 ```bash
-git clone https://github.com/<your-username>/brain_tumor_segmentation.git
+git clone https://github.com/RaghavSarangan2003/brain_tumor_segmentation_using_UNET.git
 cd brain_tumor_segmentation
 ```
 
