@@ -177,7 +177,9 @@ This project uses a standard 2D UNET architecture.
 - MRI brain images with corresponding tumor masks  
 - ~3000 image–mask pairs  
 - RGB slices (configurable to grayscale)  
-- severe foreground–background imbalance  
+- severe foreground–background imbalance 
+
+Data source: https://www.kaggle.com/datasets/nikhilroxtomar/brain-tumor-segmentation
 
 ### Data Integrity Checks
 
