@@ -1,0 +1,48 @@
+# ===============================
+# Python
+# ===============================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ===============================
+# Virtual Environments
+# ===============================
+.venv/
+venv/
+.brain_tumor_segmentation_venv/
+
+# ===============================
+# IDE / Editor files
+# ===============================
+.idea/
+.vscode/
+
+# ===============================
+# Training outputs & logs
+# ===============================
+log_dir/
+saved_model/
+results/
+runs/
+
+# ===============================
+# Dataset (DO NOT UPLOAD DATA)
+# ===============================
+data/
+train_images/
+train_masks/
+test_images/
+test_masks/
+
+# ===============================
+# Personal notes
+# ===============================
+notes_for_me.txt
+
+# ===============================
+# OS files
+# ===============================
+.DS_Store
+Thumbs.db
