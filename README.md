@@ -14,7 +14,23 @@ Rather than chasing state-of-the-art scores, this work focuses on:
 - clear interpretation of results
 
 ---
+## Citation
 
+If you use this code or find this work useful, please cite:
+```bibtex
+@misc{ramanujam2026unet,
+  author       = {Ramanujam, Raghav Sarangan},
+  title        = {A Reproducible 2D U-Net Baseline for Brain Tumor 
+                  Segmentation with Structured Error Analysis},
+  year         = {2026},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.18989161},
+  url          = {https://doi.org/10.5281/zenodo.18989161}
+}
+```
+**Preprint:** https://doi.org/10.5281/zenodo.18989161
+
+---
 ## Problem Statement
 
 Brain tumor segmentation is a challenging medical imaging task due to:
@@ -290,11 +306,8 @@ Validation Dice exhibited:
 - recovery after temporary dips  
 - a clear peak followed by overfitting  
 
-This behavior was maybe observed due to:
-
-- usage of Dice-based loss  
-- applying random data augmentation  
-- training on imbalanced medical data  
+This behavior is consistent with known training dynamics when using 
+Dice-based losses and data augmentation on imbalanced medical data.  
 
 The best generalization performance was achieved at **Epoch 11**.
 
@@ -353,7 +366,9 @@ The following plots summarize model behavior across training epochs:
 
 ### Interpretation
 
-- Validation Dice shows fluctuations, that may be caused when using Dice-based losses and data augmentation.
+- Validation Dice shows early fluctuations consistent with known 
+  training dynamics under Dice-based losses and data augmentation 
+  on imbalanced data.
 - A clear peak at Epoch 11 indicates optimal generalization.
 - Continued training beyond this point led to overfitting, as training Dice increased while validation Dice declined.
 
@@ -362,11 +377,12 @@ This behavior confirms stable convergence and justifies early stopping based on 
 ---
 ## Final Results
 
-| Metric               | Value |
-|----------------------|-------|
-| Best Validation Dice | 0.547 |
-| Validation IoU       | ~0.41 |
-| Training Dice        | ~0.56 |
+| Metric          | Value  |
+|-----------------|--------|
+| Mean Dice       | 0.4708 |
+| Mean IoU        | 0.3589 |
+| Median Dice     | 0.5289 |
+| Best Val. Dice  | 0.547  |
 
 ### Interpretation
 
@@ -455,7 +471,7 @@ These errors are primarily due to:
 The qualitative and quantitative results together indicate that:
 
 - The model provides reliable tumor localization
-- Dice ≈ 0.55 
+- Mean Dice 0.4708 across all 64 test images
 - Visual results align well with numerical performance
 - Limitations are structural rather than implementation-related
 
@@ -516,7 +532,7 @@ Possible extensions include:
 
 ## Author
 
-**Raghav Sarangan**  
-Computer Science Engineer | Aspiring M.Sc. Student  
+**Raghav Sarangan Ramanujam**  
+M.Sc. Computer Science, Philipps-Universität Marburg
 
 
