@@ -24,8 +24,8 @@ If you use this code or find this work useful, please cite:
                   Segmentation with Structured Error Analysis},
   year         = {2026},
   publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.18989161},
-  url          = {https://doi.org/10.5281/zenodo.18989161}
+  doi          = {10.5281/zenodo.18995414},
+  url          = {https://doi.org/10.5281/zenodo.18995414}
 }
 ```
 **Preprint:** https://doi.org/10.5281/zenodo.18995414
